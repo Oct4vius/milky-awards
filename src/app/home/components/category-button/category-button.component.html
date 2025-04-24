@@ -1,0 +1,36 @@
+<button
+  #categoryButton
+  [disabled]="disabled()"
+  [class.open]="isOpen()"
+  (mouseenter)="isOpen.set(true)"
+  (mouseleave)="isOpen.set(false)"
+  (click)="onClick()"
+  class="bg-[#F7F7F7] disabled:opacity-50 text-[#212121] text-[25px] font-bold rounded-lg p-[12px_24px] 
+  cursor-pointer w-full transition-all duration-300 ease-in-out h-[100px] hover:h-[500px] button-category 
+  overflow-hidden relative {{ !disabled() ? 'active:scale-[0.95]' : ''}}"
+>
+  @if (isOpen() && video()) {
+  <video
+    autoplay
+    [muted]="isMuted()"
+    loop
+    playsinline
+    class="absolute top-0 left-0 w-full h-full object-cover"
+  >
+    <source [src]="video()" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+  <button (click)="onClickVolume($event)" class="absolute bottom-4 right-4">
+    <fa-icon
+      class="text-[white]"
+      [icon]="isMuted() ? faVolumeMute : faVolumeHigh"
+    ></fa-icon>
+  </button>
+  }
+
+  <span
+    class="relative z-[100] text-outline {{ isOpen() ? 'text-[white]' : '' }}"
+  >
+    {{ title() }}
+  </span>
+</button>
