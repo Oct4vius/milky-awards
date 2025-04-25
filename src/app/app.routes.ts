@@ -5,6 +5,7 @@ const LoginComponent = () => import('./auth/components/login/login.component').t
 const RegisterComponent = () => import('./auth/components/register/register.component').then(m => m.RegisterComponent);
 const HomeComponent = () => import('./home/home.component').then(m => m.HomeLayoutComponent);
 const VoteCategoryComponent = () => import('./home/pages/vote-category/vote-category.component').then(m => m.VoteCategoryComponent);
+const SelectionComponent = () => import('./home/pages/selection/selection.component').then(m => m.SelectionComponent);
 
 export const routes: Routes = [
     {path: 'auth', loadComponent: authComponent, children: [
@@ -12,7 +13,10 @@ export const routes: Routes = [
         {path: 'register', loadComponent: RegisterComponent},
         {path: '', redirectTo: 'login', pathMatch: 'full'},
     ]},
-    {path: '', loadComponent: HomeComponent},
-    {path: 'vote-category', loadComponent: VoteCategoryComponent},
+    {path: '', loadComponent: HomeComponent, children: [
+        {path: 'selection', loadComponent: SelectionComponent},
+        {path: 'vote-category', loadComponent: VoteCategoryComponent},
+        {path: '', redirectTo: 'selection', pathMatch: 'full'},
+    ]},
     {path: '**', redirectTo: '', pathMatch: 'full'},
 ];

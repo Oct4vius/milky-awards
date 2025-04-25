@@ -7,12 +7,13 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faVolumeMute, faVolumeHigh } from '@fortawesome/free-solid-svg-icons';
+import { faVolumeMute, faVolumeHigh, faLock } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'home-category-button',
   imports: [FontAwesomeModule],
   templateUrl: './category-button.component.html',
+  styleUrls: ['./category-button.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoryButtonComponent {
@@ -28,11 +29,17 @@ export class CategoryButtonComponent {
   public isMuted = signal<boolean>(true);
   public faVolumeMute = faVolumeMute;
   public faVolumeHigh = faVolumeHigh;
+  public faLock = faLock;
 
 
   public onClick() {
     if (this.disabled()) return;
     this.router.navigate([this.redirectTo()]);
+  }
+
+  public onMouseLeave() {
+    this.isOpen.set(false);
+    this.isMuted.set(true);
   }
 
   public onClickVolume(e: MouseEvent) {
