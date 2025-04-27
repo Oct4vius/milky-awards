@@ -1,1 +1,24 @@
-<p>vote-category works!</p>,
+<div class="flex p-2 h-full gap-5">
+
+    <div class="bg-white rounded-2xl p-[30px_10px] w-1/5 ">
+        <ul class="p-2 rounded flex flex-col gap-2">
+            <li (click)="onClickMenuItem('cat-obligatory')" class="menu-item rounded-lg {{selectedMenu() === 'cat-obligatory' ? 'bg-black! text-white' : '' }}
+                {{selectedMenu() !== 'cat-obligatory' ? 'active:scale-95' : '' }}">Categorías obligatorias
+            </li>
+            <li (click)="onClickMenuItem('cat-optional')" id="cat-optional" class="menu-item rounded-lg {{selectedMenu() === 'cat-optional' ? 'bg-black! text-white' : '' }}
+                {{selectedMenu() !== 'cat-optional' ? 'active:scale-95' : '' }}">Categorías opcionales
+            </li>
+            <li (click)="onClickMenuItem('cat-make-suggestion')" id="cat-suggestion" class="menu-item rounded-lg {{selectedMenu() === 'cat-make-suggestion' ? 'bg-black! text-white' : '' }}
+                {{selectedMenu() !== 'cat-make-suggestion' ? 'active:scale-95' : '' }}
+                ">Sugiere una categoría</li>
+            <li (click)="onClickMenuItem('cat-suggestion')" id="cat-suggestion" class="menu-item rounded-lg {{selectedMenu() === 'cat-suggestion' ? 'bg-black! text-white' : '' }}
+                {{selectedMenu() !== 'cat-suggestion' ? 'active:scale-95' : '' }}
+                ">Categorías sugerenciadas</li>
+        </ul>
+    </div>
+
+    <div class="bg-white rounded-2xl w-4/5 p-3">
+        <router-outlet/>
+    </div>
+
+</div>
