@@ -1,1 +1,23 @@
-<p>login works</p>
+<div class="color-balck flex flex-col justify-center items-center w-full ">
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4 w-full">
+        @for (item of loginElements(); track $index) {
+
+        <div class="flex flex-col w-full">
+            <label class="capitalize">{{ item }}</label>
+            <input class="input w-full" [formControlName]="item" [type]="item" />
+            @if (isValidField(item)) {
+            <span class=" text-[red]">
+                {{ isValidField(item) }}
+            </span>
+            }
+        </div>
+
+        }
+
+        <button class="btn">
+            Take someone's heart
+        </button>
+    </form>
+
+</div>

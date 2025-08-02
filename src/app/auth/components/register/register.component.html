@@ -1,1 +1,25 @@
-<p>register works</p>
+<div class="flex flex-col w-full items-center">
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4 w-full">
+        @for (item of registerElements(); track $index) {
+
+        <div class="flex flex-col w-full">
+            <label class="capitalize">{{ item }}</label>
+            <input class="input w-full" [formControlName]="item" [type]="item === 'confirm password' ? 'password' : item" />
+            @if (isValidField(item)) {
+            <span class="text-[red]">
+                {{ isValidField(item) }}
+            </span>
+
+            }
+        </div>
+
+        }
+
+        <button class="btn capitalize">
+            registrate compai
+        </button>
+    </form>
+
+
+</div>
