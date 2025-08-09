@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { AuthGuard } from './auth/guard/auth.guard';
 
 const authComponent = () => import('./auth/auth.component').then(m => m.AuthLayoutComponent);
 const LoginComponent = () => import('./auth/components/login/login.component').then(m => m.LoginComponent);
@@ -17,7 +18,7 @@ export const routes: Routes = [
         {path: 'register', loadComponent: RegisterComponent},
         {path: '', redirectTo: 'login', pathMatch: 'full'},
     ]},
-    {path: '', loadComponent: HomeComponent, children: [
+    {path: '', loadComponent: HomeComponent, canActivate: [AuthGuard], children: [
         {path: 'selection', loadComponent: SelectionComponent},
         {path: 'vote-category', loadComponent: VoteCategoryComponent, children: [
             {path: 'cat-obligatory', loadComponent: ObligatoryPage},
@@ -28,5 +29,5 @@ export const routes: Routes = [
         ]},
         {path: '', redirectTo: 'selection', pathMatch: 'full'},
     ]},
-    {path: '**', redirectTo: '', pathMatch: 'full'},
+    {path: '**', redirectTo: 'auth', pathMatch: 'full'},
 ];
