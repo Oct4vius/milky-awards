@@ -6,11 +6,18 @@ import {
   signal,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {
+  faCircleCheck,
+  faXmarkCircle,
+} from '@fortawesome/free-solid-svg-icons';
 import { ValidatorService } from '../../../shared/services/validators.service';
 import { AuthService } from '../../services/auth.service';
+import { TooltipDataType } from '../../interfaces/tooltip-data.interfaces';
+import { JsonPipe } from '@angular/common';
 
 @Component({
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, FontAwesomeModule, JsonPipe],
   templateUrl: './register.component.html',
   styles: [
     `
@@ -44,41 +51,50 @@ export class RegisterComponent {
     }
   );
 
+  public faCircleCheck = faCircleCheck;
+  public faXmarkCircle = faXmarkCircle;
+
+  public messageTooltipData = signal<TooltipDataType | null>(null);
   public checkingIfWhitelisted = signal<boolean>(false);
   public registerElements = computed(() =>
     Object.keys(this.registerForm.controls)
   );
 
   public checkIfWhitelisted() {
-
-
-    console.log('Checking if whitelisted...');
+    this.messageTooltipData.set(null);
 
     this.checkingIfWhitelisted.set(true);
 
     const email = this.registerForm.get('email')?.value;
 
-    if( !email || this.registerForm.get('email')?.invalid) {
+    if (!email || this.registerForm.get('email')?.invalid) {
       this.checkingIfWhitelisted.set(false);
       return;
     }
 
     this.authService.checkIfWhitelisted(email).subscribe({
-      next: () => {
+      next: (something) => {
+        console.log({ something });
         this.checkingIfWhitelisted.set(false);
         this.registerForm.get('email')?.setErrors(null);
+        this.messageTooltipData.set({
+          message: 'Your E-mail is whitelisted',
+          status: 'success',
+        });
       },
       error: (err) => {
+        console.log({err});
         this.checkingIfWhitelisted.set(false);
         this.registerForm.get('email')?.setErrors({
           notWhitelisted: true,
           message: err,
         });
-        
+        this.messageTooltipData.set({
+          message: err || 'Your E-mail is not whitelisted',
+          status: 'error',
+        });
       },
-    })
-
-
+    });
   }
 
   public isValidField(field: string) {

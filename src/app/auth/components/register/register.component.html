@@ -11,8 +11,18 @@
                 <input (blur)="checkIfWhitelisted()" class="input w-full" [formControlName]="item" type="email" />
 
                 @if (checkingIfWhitelisted()) {
-                    <span class="loading loading-spinner loading-xs absolute right-2 top-3"></span>
+                <span class="loading loading-spinner loading-xs absolute right-2 top-3"></span>
+                } @else if (messageTooltipData()) {
+                <span class="tooltip tooltip-{{messageTooltipData()!.status}} absolute right-2 top-2"
+                    [attr.data-tip]="messageTooltipData()!.message">
+                    <fa-icon
+                        class="{{ messageTooltipData()!.status === 'success' ? 'text-green-500' : ' text-red-500' }}"
+                        [icon]="messageTooltipData()!.status === 'success' ? faCircleCheck : faXmarkCircle"></fa-icon>
+                </span>
                 }
+
+
+
 
             </div>
             } @else {
@@ -27,6 +37,11 @@
         </div>
 
         }
+
+
+        <pre>
+        {{ messageTooltipData() | json }}
+        </pre>
 
         <button class="btn capitalize">
             registrate compai

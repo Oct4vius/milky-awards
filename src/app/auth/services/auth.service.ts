@@ -54,15 +54,14 @@ export class AuthService {
 
   public checkIfWhitelisted(email: string) {
     return this.http
-      .post<{ isWhitelisted: boolean }>(
+      .post(
         `${enviroments.baseURL}/auth/check-if-whitelisted`,
         {
           email,
         }
       )
       .pipe(
-        map(({ isWhitelisted }) => isWhitelisted),
-        catchError((err) => throwError(() => err.error.message))
+        catchError((err) => throwError(() => err.error.message)),
       );
   }
 }
