@@ -1,15 +1,26 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { enviroments } from '../../../environment/environments';
-import { LoginResponse, User } from '../../../interfaces/user.interfaces';
+import { User } from '../../../interfaces/user.interfaces';
 import { catchError, map, throwError } from 'rxjs';
+import {
+  LoginPayload,
+  LoginResponse,
+  RegisterPayloadType,
+  RegisterResponse,
+} from '../interfaces/auth.intefaces';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private http = inject(HttpClient);
 
   private _currentUser = signal<User | null>(null);
-  public currentUser = computed(() => this._currentUser());
+  public currentUser = computed(() => {
+  
+    console.log('Current user accessed:', this._currentUser());
+  
+    return this._currentUser()
+  });
 
   private setAuthentication(user: User, token: string): boolean {
     this._currentUser.set(user);
@@ -18,7 +29,7 @@ export class AuthService {
     return true;
   }
 
-  public login({ email, password }: { email: string; password: string }) {
+  public login({ email, password }: LoginPayload) {
     return this.http
       .post<LoginResponse>(`${enviroments.baseURL}/auth/login`, {
         email,
@@ -30,6 +41,18 @@ export class AuthService {
         }),
         catchError((err) => throwError(() => err.error.message))
       );
+  }
+
+  public register(payload: RegisterPayloadType) {
+    return this.http.post<RegisterResponse>(
+      `${enviroments.baseURL}/auth/register`,
+      payload
+    ).pipe(
+      map(({ newUser, token }) => {
+        return this.setAuthentication(newUser, token);
+      }),
+      catchError((err) => throwError(() => err.error.message))
+    );
   }
 
   public checkToken() {
@@ -54,14 +77,9 @@ export class AuthService {
 
   public checkIfWhitelisted(email: string) {
     return this.http
-      .post(
-        `${enviroments.baseURL}/auth/check-if-whitelisted`,
-        {
-          email,
-        }
-      )
-      .pipe(
-        catchError((err) => throwError(() => err.error.message)),
-      );
+      .post(`${enviroments.baseURL}/auth/check-if-whitelisted`, {
+        email,
+      })
+      .pipe(catchError((err) => throwError(() => err.error.message)));
   }
 }

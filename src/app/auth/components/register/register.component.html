@@ -39,9 +39,11 @@
         }
 
 
-        <pre>
-        {{ messageTooltipData() | json }}
-        </pre>
+        @if (errorMessage()) {
+            <span class="text-red-500 text-center">
+                {{errorMessage()}}
+            </span>
+        }
 
         <button class="btn capitalize">
             registrate compai

@@ -5,19 +5,19 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
   faCircleCheck,
   faXmarkCircle,
 } from '@fortawesome/free-solid-svg-icons';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ValidatorService } from '../../../shared/services/validators.service';
 import { AuthService } from '../../services/auth.service';
 import { TooltipDataType } from '../../interfaces/tooltip-data.interfaces';
-import { JsonPipe } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
-  imports: [ReactiveFormsModule, FontAwesomeModule, JsonPipe],
+  imports: [ReactiveFormsModule, FontAwesomeModule],
   templateUrl: './register.component.html',
   styles: [
     `
@@ -32,11 +32,11 @@ export class RegisterComponent {
   private fb = inject(FormBuilder);
   private validatorService = inject(ValidatorService);
   private authService = inject(AuthService);
+  private router = inject(Router);
 
   public registerForm = this.fb.group(
     {
-      'first name': ['', Validators.required],
-      'last name': ['', Validators.required],
+      username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       'confirm password': ['', [Validators.required, Validators.minLength(6)]],
@@ -54,6 +54,7 @@ export class RegisterComponent {
   public faCircleCheck = faCircleCheck;
   public faXmarkCircle = faXmarkCircle;
 
+  public errorMessage = signal<string>('');
   public messageTooltipData = signal<TooltipDataType | null>(null);
   public checkingIfWhitelisted = signal<boolean>(false);
   public registerElements = computed(() =>
@@ -74,7 +75,6 @@ export class RegisterComponent {
 
     this.authService.checkIfWhitelisted(email).subscribe({
       next: (something) => {
-        console.log({ something });
         this.checkingIfWhitelisted.set(false);
         this.registerForm.get('email')?.setErrors(null);
         this.messageTooltipData.set({
@@ -83,7 +83,6 @@ export class RegisterComponent {
         });
       },
       error: (err) => {
-        console.log({err});
         this.checkingIfWhitelisted.set(false);
         this.registerForm.get('email')?.setErrors({
           notWhitelisted: true,
@@ -107,6 +106,24 @@ export class RegisterComponent {
       return;
     }
 
-    console.log(this.registerForm.value);
+    this.authService
+      .register({
+        username: this.registerForm.value.username!,
+        email: this.registerForm.value.email!,
+        password: this.registerForm.value.password!,
+      })
+      .subscribe({
+        next: () => this.router.navigateByUrl(''),
+        error: (message) => {
+          this.errorMessage.set(message);
+
+          setTimeout(() => {
+            this.errorMessage.set('');
+          }, 5000);
+
+          this.registerForm.reset();
+          
+        },
+      });
   }
 }

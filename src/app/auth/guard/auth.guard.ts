@@ -7,15 +7,19 @@ export const AuthGuard: CanActivateFn = () => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  return authService.checkToken().pipe(
-    map(() => {
-      return true;
-    }),
-    catchError((err) => {
-      console.error(err);
-      localStorage.removeItem('token');
-      router.navigateByUrl('/auth/login');
-      return of(false);
-    })
-  );
+  console.log('AuthGuard activated');
+
+  // return authService.checkToken().pipe(
+  //   map(() => {
+  //     return true;
+  //   }),
+  //   catchError((err) => {
+  //     console.error(err);
+  //     localStorage.removeItem('token');
+  //     router.navigateByUrl('/auth/login');
+  //     return of(false);
+  //   })
+  // );
+
+  return true
 };
