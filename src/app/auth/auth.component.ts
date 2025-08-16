@@ -1,13 +1,13 @@
-import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
-import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
-import { filter, Subscription } from 'rxjs';
+import { Component, inject, signal } from '@angular/core';
+import { Router, RouterOutlet } from '@angular/router';
+
 
 @Component({
   imports: [RouterOutlet],
   templateUrl: 'auth.component.html',
   styleUrl: 'auth.component.scss',
 })
-export class AuthLayoutComponent implements OnInit {
+export class AuthLayoutComponent {
 
   private route: Router = inject(Router);
 
@@ -20,10 +20,6 @@ export class AuthLayoutComponent implements OnInit {
   public navigateTo(route: string) {
     this.route.navigate([route]);
     this.currentRoute.set(route);
-  }
-
-  ngOnInit(): void {
-    console.log(this.currentRoute())
   }
 
 }

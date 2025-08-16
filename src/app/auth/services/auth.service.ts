@@ -15,12 +15,7 @@ export class AuthService {
   private http = inject(HttpClient);
 
   private _currentUser = signal<User | null>(null);
-  public currentUser = computed(() => {
-  
-    console.log('Current user accessed:', this._currentUser());
-  
-    return this._currentUser()
-  });
+  public currentUser = computed(() => {return this._currentUser()});
 
   private setAuthentication(user: User, token: string): boolean {
     this._currentUser.set(user);
@@ -57,17 +52,17 @@ export class AuthService {
 
   public checkToken() {
     const token = localStorage.getItem('token');
-    if (!token) {
-      throw new Error('No token found');
-    }
 
     return this.http
-      .get(`${enviroments.baseURL}/auth/check-token`, {
+      .get<User>(`${enviroments.baseURL}/auth/check-token`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
       .pipe(
+        map((user) => {
+          this._currentUser.set(user);
+        }),
         catchError((err) => {
           localStorage.removeItem('token');
           return throwError(() => err.error.message);
