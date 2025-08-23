@@ -1,11 +1,29 @@
-<div class="h-screen w-screen home-body relative">
-  <nav class="fixed flex justify-end-safe w-full p-[4px_8px]">
+<div class="h-12/12 w-screen home-body relative">
+  <nav class=" h-1/12 flex w-full items-center  bg-base-300">
+
+    <div class="ps-4">
+
+      <span class=" text-lg font-bold">
+        
+        Milky Awards
+        
+      </span>
+    </div>
 
 
-    <span class="text-4xl  username">
-      {{ userFirstName() }}
-    </span>
+    <div class="flex-1 flex justify-end-safe items-center pe-4 gap-2">
 
+      <span class="text-lg text-accent username">
+        {{ userFirstName() }}
+      </span>
+      
+      <button class="btn btn-ghost btn-circle" (click)="logout()">
+        <fa-icon [icon]="faArrowRightFromBracket" />
+      </button>
+
+    </div>
   </nav>
-  <router-outlet />
+  <div class="h-11/12">
+    <router-outlet />
+  </div>
 </div>

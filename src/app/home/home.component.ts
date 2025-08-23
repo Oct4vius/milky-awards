@@ -1,20 +1,24 @@
 import { ChangeDetectionStrategy, Component, computed, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { AuthService } from '../auth/services/auth.service';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {faArrowRightFromBracket} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, FontAwesomeModule],
 })
-export class HomeLayoutComponent implements OnInit {
+export class HomeLayoutComponent {
   
-  public authService = inject(AuthService);
+  private authService = inject(AuthService);
+
   
   public userFirstName = computed(() => this.authService.currentUser()?.name || "Fulano")
   
-  ngOnInit(): void {
-    console.log(this.authService.currentUser());
-  } 
+  public faArrowRightFromBracket = faArrowRightFromBracket;
+  
+  public logout = () => this.authService.logout();
+  
 }

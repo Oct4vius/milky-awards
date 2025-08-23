@@ -9,11 +9,14 @@ import {
   RegisterPayloadType,
   RegisterResponse,
 } from '../interfaces/auth.intefaces';
+import { Router } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private http = inject(HttpClient);
-
+  private router = inject(Router);
+  
+  private baseURL = enviroments.baseURL;
   private _currentUser = signal<User | null>(null);
   public currentUser = computed(() => {return this._currentUser()});
 
@@ -26,7 +29,7 @@ export class AuthService {
 
   public login({ email, password }: LoginPayload) {
     return this.http
-      .post<LoginResponse>(`${enviroments.baseURL}/auth/login`, {
+      .post<LoginResponse>(`${this.baseURL}/auth/login`, {
         email,
         password,
       })
@@ -38,9 +41,16 @@ export class AuthService {
       );
   }
 
+  public logout() {
+    this._currentUser.set(null);
+    localStorage.removeItem('token');
+
+    this.router.navigateByUrl('/auth/login');
+  }
+
   public register(payload: RegisterPayloadType) {
     return this.http.post<RegisterResponse>(
-      `${enviroments.baseURL}/auth/register`,
+      `${this.baseURL}/auth/register`,
       payload
     ).pipe(
       map(({ newUser, token }) => {
@@ -54,7 +64,7 @@ export class AuthService {
     const token = localStorage.getItem('token');
 
     return this.http
-      .get<User>(`${enviroments.baseURL}/auth/check-token`, {
+      .get<User>(`${this.baseURL}/auth/check-token`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -72,7 +82,7 @@ export class AuthService {
 
   public checkIfWhitelisted(email: string) {
     return this.http
-      .post(`${enviroments.baseURL}/auth/check-if-whitelisted`, {
+      .post(`${this.baseURL}/auth/check-if-whitelisted`, {
         email,
       })
       .pipe(catchError((err) => throwError(() => err.error.message)));

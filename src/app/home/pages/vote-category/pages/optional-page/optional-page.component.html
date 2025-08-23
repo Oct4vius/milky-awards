@@ -1,1 +1,53 @@
-<p>optional-page works!</p>,
+<div class="h-full">
+
+
+    <div class="text-center clear-start h-1/12">
+        <h1 class="text-3xl font-bold  mb-5">Categoría Opcionales</h1>
+        <p>
+            Aquí estan las categorias que pueden o no pueden ir. Las 5 categorias con mas votos pasaran a ser caegorias
+            obligatorias.
+        </p>
+    </div>
+
+
+    <div class="h-11/12">
+
+        @if(isLoading()){
+        <shared-loading />
+        } @else {
+        <ul class="list rounded-box shadow-md">
+
+            @for (item of optionalCategories(); track $index) {
+
+            <li class="list-row">
+                <div class="text-4xl font-thin opacity-30 tabular-nums">{{item.votes <= 9 ? '0' +(item.votes) :
+                        item.votes+1}}</div>
+                        <div class="list-col-grow flex items-center ">
+                            <span class="card-title">{{ item.name }}</span>
+                        </div>
+                        @if (item.userVoted) {
+                        <button (click)="decrease(item.uuid)" class="btn text-normal min-w-48 bg-red-950 btn-ghost">
+
+                            Mentira ete no va no
+                        </button>
+                        } @else {
+                        <button (click)="increase(item.uuid)" class="btn text-normal min-w-48 bg-green-950 btn-ghost">
+
+                            Ete tiene que ir
+                        </button>
+                        }
+
+            </li>
+
+            }
+
+        </ul>
+        }
+
+
+
+    </div>
+
+
+
+</div>
