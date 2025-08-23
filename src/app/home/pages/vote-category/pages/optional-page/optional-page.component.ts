@@ -1,13 +1,14 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  effect,
   inject,
   OnInit,
   signal,
 } from '@angular/core';
 import { VoteCategoryService } from '../../services/vote-category.service';
 import { GetAllOptionalCategoriesResponse } from '../../interfaces/vote-category.interfaces';
-import { LoadingComponent } from "../../../../../shared/components/Loading/Loading.component";
+import { LoadingComponent } from '../../../../../shared/components/Loading/Loading.component';
 
 @Component({
   templateUrl: './optional-page.component.html',
@@ -18,6 +19,8 @@ export class OptionalPageComponent implements OnInit {
   private voteCategoryService = inject(VoteCategoryService);
 
   public isLoading = signal<boolean>(true);
+
+  public isButtonDisabled = signal<string[]>([]);
 
   public optionalCategories = signal<GetAllOptionalCategoriesResponse[]>([]);
 
@@ -38,6 +41,7 @@ export class OptionalPageComponent implements OnInit {
   };
 
   public increase = (uuid: string) => {
+    this.isButtonDisabled.update((uuids) => [...uuids, uuid]);
     this.voteCategoryService.increaseVoteOptionalCatregory(uuid).subscribe({
       next: (category) => {
         const categories = this.optionalCategories();
@@ -46,15 +50,22 @@ export class OptionalPageComponent implements OnInit {
           categories[index] = category;
           this.optionalCategories.set([...categories]);
         }
+        this.isButtonDisabled.update((uuids) =>
+          uuids.filter((uuids) => uuids !== uuid)
+        );
       },
       error: (err) => {
         alert(err.message);
         console.error(err);
+        this.isButtonDisabled.update((uuids) =>
+          uuids.filter((uuids) => uuids !== uuid)
+        );
       },
     });
   };
 
   public decrease = (uuid: string) => {
+    this.isButtonDisabled.update((uuids) => [...uuids, uuid]);
     this.voteCategoryService.DecreaseVoteOptionalCatregory(uuid).subscribe({
       next: (category) => {
         const categories = this.optionalCategories();
@@ -63,12 +74,19 @@ export class OptionalPageComponent implements OnInit {
           categories[index] = category;
           this.optionalCategories.set([...categories]);
         }
+        this.isButtonDisabled.update((uuids) =>
+          uuids.filter((uuids) => uuids !== uuid)
+        );
       },
       error: (err) => {
         alert(err.message);
         console.error(err);
+        this.isButtonDisabled.update((uuids) =>
+          uuids.filter((uuids) => uuids !== uuid)
+        );
       },
     });
+
   };
 
   ngOnInit(): void {

@@ -11,15 +11,19 @@ export class VoteCategoryService {
   private http = inject(HttpClient);
 
   private baseURL = enviroments.baseURL;
-  private headers = {
-    'authorization': `Bearer ${localStorage.getItem('token')}`,
-  }
+
 
   public getAllOptionalCategories() {
+    const token = localStorage.getItem('token') || '';
+
     return this.http
       .get<GetAllOptionalCategoriesResponse[]>(
-        `${this.baseURL}/optional-categories`, 
-        { headers: this.headers }
+        `${this.baseURL}/optional-categories`,
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
       )
       .pipe(
         map((response) => response),
@@ -28,11 +32,16 @@ export class VoteCategoryService {
   }
 
   public increaseVoteOptionalCatregory(uuid: string) {
+    const token = localStorage.getItem('token') || '';
     return this.http
       .patch<GetAllOptionalCategoriesResponse>(
         `${this.baseURL}/optional-categories/increase/${uuid}`,
         {},
-        { headers: this.headers }
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
       )
       .pipe(
         map((response) => response),
@@ -41,11 +50,16 @@ export class VoteCategoryService {
   }
 
   public DecreaseVoteOptionalCatregory(uuid: string) {
+    const token = localStorage.getItem('token') || '';
     return this.http
       .patch<GetAllOptionalCategoriesResponse>(
         `${this.baseURL}/optional-categories/decrease/${uuid}`,
         {},
-        { headers: this.headers }
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
       )
       .pipe(
         map((response) => response),

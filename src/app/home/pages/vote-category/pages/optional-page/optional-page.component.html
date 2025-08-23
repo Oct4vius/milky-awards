@@ -26,14 +26,23 @@
                             <span class="card-title">{{ item.name }}</span>
                         </div>
                         @if (item.userVoted) {
-                        <button (click)="decrease(item.uuid)" class="btn text-normal min-w-48 bg-red-950 btn-ghost">
-
+                        <button (click)="decrease(item.uuid)" class="btn text-normal min-w-48 bg-red-950 btn-ghost"
+                            [disabled]="isButtonDisabled().includes(item.uuid)">
+                            @if (isButtonDisabled().includes(item.uuid)){
+                            <shared-loading />
+                            } @else {
                             Mentira ete no va no
+                            }
                         </button>
                         } @else {
-                        <button (click)="increase(item.uuid)" class="btn text-normal min-w-48 bg-green-950 btn-ghost">
+                        <button (click)="increase(item.uuid)" class="btn text-normal min-w-48 bg-green-950 btn-ghost"
+                            [disabled]="isButtonDisabled().includes(item.uuid)">
 
+                            @if (isButtonDisabled().includes(item.uuid)){
+                            <shared-loading />
+                            } @else {
                             Ete tiene que ir
+                            }
                         </button>
                         }
 
