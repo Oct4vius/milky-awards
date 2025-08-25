@@ -9,17 +9,24 @@
             <h1 class="text-2xl text-center font-bold">Categorías de votación</h1>
         </div>
         <div class="w-full">
-
             @for (item of MenuItems; track $index) {
+            @if (item.name === 'Categorías sugerenciadas' && !isAdmin()) {
+            <button (click)="onClickMenuItem(item.route)"
+                class="btn shadow-none outline-none w-full p-[24px_8px] {{selectedMenu() === item.route ? 'bg-black! text-white' : '' }}">
+                {{item.name}}
+            </button>
+
+            } @else {
             <button (click)="onClickMenuItem(item.route)"
                 class="btn shadow-none outline-none w-full p-[24px_8px] {{selectedMenu() === item.route ? 'bg-black! text-white' : '' }}">
                 {{item.name}}
             </button>
             }
+            }
         </div>
     </div>
 
-    <div class="bg-base-200 rounded-2xl w-4/5 p-3">
+    <div class="bg-base-200 rounded-2xl w-4/5 max-sm:w-5/5 p-3 overflow-auto">
         <router-outlet />
     </div>
 

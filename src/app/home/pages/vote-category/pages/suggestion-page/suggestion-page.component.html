@@ -1,1 +1,49 @@
-<p>suggestion-page works!</p>,
+<div class="h-full">
+
+
+    <div class="text-center h-1/12">
+        <h1 class="text-3xl font-bold  mb-5">Categoría Sugerenciadas</h1>
+        <p>
+            Esta parte solo la puden ver los que son admins. Aqui estan las categorias que los usuarios han sugerido.
+            Esta en ti aprobarlas o borrarlas.
+        </p>
+    </div>
+
+
+    <div class="h-11/12">
+
+        @if(isLoading()){
+        <shared-loading />
+        } @else {
+        <ul class="list rounded-box shadow-md">
+
+            @for (item of suggestionItems(); track $index) {
+
+            <li class="list-row">
+                <div class="text-4xl font-thin opacity-30 tabular-nums">{{ $index+1 <= 9 ? '0' +( $index+1) :
+                        $index+1}}</div>
+                        <div class="list-col-grow flex items-center ">
+                            <span class="card-title">{{ item.name }}</span>
+                        </div>
+                        @if (item.description) {
+                        <p class="list-col-wrap text-xs">
+                            {{ item.description }}
+                        </p>
+                        }
+
+                        <button class="btn btn-square bg-green-500" click="my_modal_2.showModal()">
+                            <fa-icon [icon]="faSquareCheck" />
+                        </button>
+                        <button class="btn btn-square bg-red-500 ">
+                            <fa-icon [icon]="faTrashCan" />
+                        </button>
+            </li>
+
+            }
+
+        </ul>
+        }
+
+    </div>
+
+</div>

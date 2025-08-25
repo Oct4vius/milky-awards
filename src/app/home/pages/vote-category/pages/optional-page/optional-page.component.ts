@@ -18,7 +18,7 @@ import { LoadingComponent } from '../../../../../shared/components/Loading/Loadi
 export class OptionalPageComponent implements OnInit {
   private voteCategoryService = inject(VoteCategoryService);
 
-  public isLoading = signal<boolean>(true);
+  public isLoading = signal<boolean>(false);
 
   public isButtonDisabled = signal<string[]>([]);
 
