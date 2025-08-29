@@ -26,8 +26,8 @@ export class MakeSuggestionPageComponent {
   public onSubmit() {
     if (!this.suggestForm.valid) return;
 
-    this.suggestionService.createSuggestion({
-      name: this.suggestForm.value.name!,
+    this.suggestionService.create({
+      title: this.suggestForm.value.name!,
       description: this.suggestForm.value.description,
     }).subscribe({
       next: () => {

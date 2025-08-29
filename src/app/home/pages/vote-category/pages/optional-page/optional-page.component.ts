@@ -6,17 +6,22 @@ import {
   OnInit,
   signal,
 } from '@angular/core';
-import { VoteCategoryService } from '../../services/vote-category.service';
+import { OptionalService } from '../../services/optional.service';
 import { GetAllOptionalCategoriesResponse } from '../../interfaces/vote-category.interfaces';
 import { LoadingComponent } from '../../../../../shared/components/Loading/Loading.component';
+import { AuthService } from '../../../../../auth/services/auth.service';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   templateUrl: './optional-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [LoadingComponent],
+  imports: [LoadingComponent, FontAwesomeModule],
 })
 export class OptionalPageComponent implements OnInit {
-  private voteCategoryService = inject(VoteCategoryService);
+  private voteCategoryService = inject(OptionalService);
+
+  public faTrashCan = faTrashCan;
 
   public isLoading = signal<boolean>(false);
 
@@ -24,9 +29,15 @@ export class OptionalPageComponent implements OnInit {
 
   public optionalCategories = signal<GetAllOptionalCategoriesResponse[]>([]);
 
+  private authService = inject(AuthService);
+
+  public get isUserAdmin() {
+    return this.authService.isUserAdmin;
+  }
+
   private getAllOptionalCategories = () => {
     this.isLoading.set(true);
-    this.voteCategoryService.getAllOptionalCategories().subscribe({
+    this.voteCategoryService.getAll().subscribe({
       next: (categories) => {
         this.optionalCategories.set(categories);
       },
@@ -39,6 +50,10 @@ export class OptionalPageComponent implements OnInit {
     });
     this.isLoading.set(false);
   };
+
+  public deleteVotation = (uuid: string) => {
+    // Confirm before deleting
+  }
 
   public increase = (uuid: string) => {
     this.isButtonDisabled.update((uuids) => [...uuids, uuid]);

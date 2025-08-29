@@ -23,7 +23,7 @@
                 <div class="text-4xl font-thin opacity-30 tabular-nums">{{item.votes <= 9 ? '0' +(item.votes) :
                         item.votes+1}}</div>
                         <div class="list-col-grow flex items-center ">
-                            <span class="card-title">{{ item.name }}</span>
+                            <span class="card-title">{{ item.title }}</span>
                         </div>
                         @if (item.userVoted) {
                         <button (click)="decrease(item.uuid)" class="btn text-normal min-w-48 bg-red-950 btn-ghost"
@@ -43,6 +43,11 @@
                             } @else {
                             Ete tiene que ir
                             }
+                        </button>
+                        }
+                        @if(isUserAdmin){
+                        <button class="btn btn-square bg-red-500" (click)="deleteVotation(item.uuid)">
+                            <fa-icon [icon]="faTrashCan" />
                         </button>
                         }
 

@@ -1,6 +1,6 @@
 export interface GetAllOptionalCategoriesResponse {
     uuid:      string;
-    name:      string;
+    title:      string;
     votes:     number;
     userVoted: boolean;
     createdAt: Date;
@@ -8,14 +8,14 @@ export interface GetAllOptionalCategoriesResponse {
 }
 
 export interface CreateSuggestionPayload {
-    name: string;
+    title: string;
     description?: string | null;
 }
 
 export interface CreateSuggestionResponse {
     id:          number;
     uuid:        string;
-    name:        string;
+    title:        string;
     author:      string;
     description?: string;
     createdAt:   Date;

@@ -27,6 +27,10 @@ export class AuthService {
     return true;
   }
 
+  public get isUserAdmin() {
+    return this.currentUser()?.admin || false
+  } 
+
   public login({ email, password }: LoginPayload) {
     return this.http
       .post<LoginResponse>(`${this.baseURL}/auth/login`, {

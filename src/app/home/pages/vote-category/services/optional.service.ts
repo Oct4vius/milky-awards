@@ -7,13 +7,12 @@ import { map, catchError, throwError } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class VoteCategoryService {
+export class OptionalService {
   private http = inject(HttpClient);
 
   private baseURL = enviroments.baseURL;
 
-
-  public getAllOptionalCategories() {
+  public getAll() {
     const token = localStorage.getItem('token') || '';
 
     return this.http
@@ -25,6 +24,20 @@ export class VoteCategoryService {
           },
         }
       )
+      .pipe(
+        map((response) => response),
+        catchError((err) => throwError(() => new Error(err.error.message)))
+      );
+  }
+
+  public delete(uuid: string) {
+    const token = localStorage.getItem('token') || '';
+    return this.http
+      .delete(`${this.baseURL}/optional-categories/${uuid}`, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      })
       .pipe(
         map((response) => response),
         catchError((err) => throwError(() => new Error(err.error.message)))

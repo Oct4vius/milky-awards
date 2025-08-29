@@ -23,7 +23,7 @@
                 <div class="text-4xl font-thin opacity-30 tabular-nums">{{ $index+1 <= 9 ? '0' +( $index+1) :
                         $index+1}}</div>
                         <div class="list-col-grow flex items-center ">
-                            <span class="card-title">{{ item.name }}</span>
+                            <span class="card-title">{{ item.title }}</span>
                         </div>
                         @if (item.description) {
                         <p class="list-col-wrap text-xs">
@@ -31,10 +31,10 @@
                         </p>
                         }
 
-                        <button class="btn btn-square bg-green-500" click="my_modal_2.showModal()">
+                        <button class="btn btn-square bg-green-500" onclick="approve_modal.showModal()" (click)="whenOpeningModal(item)" >
                             <fa-icon [icon]="faSquareCheck" />
                         </button>
-                        <button class="btn btn-square bg-red-500 ">
+                        <button class="btn btn-square bg-red-500" (click)="onDeleteSuggestion(item.uuid)">
                             <fa-icon [icon]="faTrashCan" />
                         </button>
             </li>
@@ -47,3 +47,25 @@
     </div>
 
 </div>
+
+
+<dialog id="approve_modal" class="modal">
+    <div class="modal-box">
+        <p class="py-2">Edita el titulo si es necesario</p>
+        <div class="modal-action">
+            <form (submit)="onApproveSuggestion()" method="dialog" class="w-full flex flex-col gap-4">
+
+                <label class="floating-label">
+                    <span>Titulo</span>
+                    <input [(ngModel)]="selectedItem().title" name="title"  placeholder="Aquí el titulo" class="input input-md w-full placeholder:opacity-10" />
+                </label>
+
+                <div class="flex justify-between">
+                    <button class="btn btn-primary">Approve</button>
+                    <button class="btn btn-ghost">Cancel</button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</dialog>

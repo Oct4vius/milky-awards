@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
+  NgModule,
   OnInit,
   signal,
 } from '@angular/core';
@@ -10,38 +11,65 @@ import { CreateSuggestionResponse } from '../../interfaces/vote-category.interfa
 import { SuggestionService } from '../../services/suggestion.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faCheck, faTrashCan } from '@fortawesome/free-solid-svg-icons';
-import { ModalComponent } from "../../../../../shared/components/Modal/Modal.component";
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-suggestion-page',
-  imports: [LoadingComponent, FontAwesomeModule, ModalComponent],
+  imports: [LoadingComponent, FontAwesomeModule, FormsModule],
   templateUrl: './suggestion-page.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class SuggestionPageComponent implements OnInit {
   
   private suggestionService = inject(SuggestionService);
-  
-  
-  public faTrashCan = faTrashCan;
-  public faSquareCheck = faCheck;
+
+  public selectedItem = signal<CreateSuggestionResponse>({} as CreateSuggestionResponse);
   public isLoading = signal<boolean>(false);
   public suggestionItems = signal<CreateSuggestionResponse[]>([]);
 
+  
+  public faTrashCan = faTrashCan;
+  public faSquareCheck = faCheck;
+
+  public whenOpeningModal = (item: CreateSuggestionResponse) => {
+    this.selectedItem.set({...item});
+  }
+
+  public onApproveSuggestion = () => {
+    this.suggestionService.approve({...this.selectedItem()}).subscribe({
+      next: () => {
+        this.getAllSuggestionItems();
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    })
+  }
+
+  public onDeleteSuggestion = (uuid: string) => {
+    this.suggestionService.delete(uuid).subscribe({
+      next: () => {
+        this.getAllSuggestionItems();
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    })
+  }
 
   public getAllSuggestionItems = () => {
     this.isLoading.set(true);
 
-    this.suggestionService.getAllSuggestions().subscribe({
+    this.suggestionService.getAll().subscribe({
       next: (items) => {
         this.suggestionItems.set(items);
         this.isLoading.set(false);
       },
       error: (err) => {
-        // alert(err.message);
+        
         console.error(err);
-
         this.suggestionItems.set([]);
+        this.isLoading.set(false);
       },
     });
   };

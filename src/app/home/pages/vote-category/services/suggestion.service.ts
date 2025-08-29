@@ -7,12 +7,12 @@ import { catchError, map, throwError } from 'rxjs';
 @Injectable({providedIn: 'root'})
 export class SuggestionService {
     private http = inject(HttpClient);
-    private baseUrl = enviroments.baseURL;
+    private baseURL = enviroments.baseURL;
 
-    public createSuggestion (payload: CreateSuggestionPayload) {
+    public create (payload: CreateSuggestionPayload) {
         const token = localStorage.getItem('token') || '';
         return this.http.post<CreateSuggestionResponse>(
-            `${this.baseUrl}/suggestion-categories`,
+            `${this.baseURL}/suggestion-categories`,
             payload,
             {
                 headers: {
@@ -25,10 +25,43 @@ export class SuggestionService {
         );
     }
 
-    public getAllSuggestions() {
+    public getAll() {
         const token = localStorage.getItem('token') || '';
         return this.http.get<CreateSuggestionResponse[]>(
-            `${this.baseUrl}/suggestion-categories`,
+            `${this.baseURL}/suggestion-categories`,
+            {
+                headers: {
+                    authorization: `Bearer ${token}`,
+                },
+            }
+        ).pipe(
+            map((response) => response),
+            catchError((err) => throwError(() => new Error(err.error.message)))
+        );
+    }
+
+    public delete(uuid: string) {
+        const token = localStorage.getItem('token') || '';
+        return this.http.delete(
+            `${this.baseURL}/suggestion-categories/${uuid}`,
+            {
+                headers: {
+                    authorization: `Bearer ${token}`,
+                },
+            }
+        ).pipe(
+            map((response) => response),
+            catchError((err) => throwError(() => new Error(err.error.message)))
+        );
+    }
+
+    public approve({uuid, title}: {uuid: string, title: string}) {
+        const token = localStorage.getItem('token') || '';
+        return this.http.post(
+            `${this.baseURL}/suggestion-categories/approve/${uuid}`,
+            {
+                title
+            },
             {
                 headers: {
                     authorization: `Bearer ${token}`,
