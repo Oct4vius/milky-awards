@@ -19,7 +19,7 @@ import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
   imports: [LoadingComponent, FontAwesomeModule],
 })
 export class OptionalPageComponent implements OnInit {
-  private voteCategoryService = inject(OptionalService);
+  private optionalService = inject(OptionalService);
 
   public faTrashCan = faTrashCan;
 
@@ -27,7 +27,7 @@ export class OptionalPageComponent implements OnInit {
 
   public isButtonDisabled = signal<string[]>([]);
 
-  public optionalCategories = signal<GetAllOptionalCategoriesResponse[]>([]);
+  public optionalItems = signal<GetAllOptionalCategoriesResponse[]>([]);
 
   private authService = inject(AuthService);
 
@@ -37,33 +37,40 @@ export class OptionalPageComponent implements OnInit {
 
   private getAllOptionalCategories = () => {
     this.isLoading.set(true);
-    this.voteCategoryService.getAll().subscribe({
+    this.optionalService.getAll().subscribe({
       next: (categories) => {
-        this.optionalCategories.set(categories);
+        this.optionalItems.set(categories);
       },
       error: (err) => {
         alert(err.message);
         console.error(err);
 
-        this.optionalCategories.set([]);
+        this.optionalItems.set([]);
       },
     });
     this.isLoading.set(false);
   };
 
   public deleteVotation = (uuid: string) => {
-    // Confirm before deleting
+    this.optionalService.delete(uuid).subscribe({
+      next: () => {
+        this.getAllOptionalCategories()
+      },
+      error: (error) => {
+        console.error(error)
+      }
+    })
   }
 
   public increase = (uuid: string) => {
     this.isButtonDisabled.update((uuids) => [...uuids, uuid]);
-    this.voteCategoryService.increaseVoteOptionalCatregory(uuid).subscribe({
+    this.optionalService.increaseVoteOptionalCatregory(uuid).subscribe({
       next: (category) => {
-        const categories = this.optionalCategories();
+        const categories = this.optionalItems();
         const index = categories.findIndex((cat) => cat.uuid === category.uuid);
         if (index !== -1) {
           categories[index] = category;
-          this.optionalCategories.set([...categories]);
+          this.optionalItems.set([...categories]);
         }
         this.isButtonDisabled.update((uuids) =>
           uuids.filter((uuids) => uuids !== uuid)
@@ -81,13 +88,13 @@ export class OptionalPageComponent implements OnInit {
 
   public decrease = (uuid: string) => {
     this.isButtonDisabled.update((uuids) => [...uuids, uuid]);
-    this.voteCategoryService.DecreaseVoteOptionalCatregory(uuid).subscribe({
+    this.optionalService.DecreaseVoteOptionalCatregory(uuid).subscribe({
       next: (category) => {
-        const categories = this.optionalCategories();
+        const categories = this.optionalItems();
         const index = categories.findIndex((cat) => cat.uuid === category.uuid);
         if (index !== -1) {
           categories[index] = category;
-          this.optionalCategories.set([...categories]);
+          this.optionalItems.set([...categories]);
         }
         this.isButtonDisabled.update((uuids) =>
           uuids.filter((uuids) => uuids !== uuid)

@@ -53,17 +53,15 @@
     <div class="modal-box">
         <p class="py-2">Edita el titulo si es necesario</p>
         <div class="modal-action">
-            <form (submit)="onApproveSuggestion()" method="dialog" class="w-full flex flex-col gap-4">
-
+            <form method="dialog" class="w-full flex flex-col gap-4">
                 <label class="floating-label">
                     <span>Titulo</span>
                     <input [(ngModel)]="selectedItem().title" name="title"  placeholder="Aquí el titulo" class="input input-md w-full placeholder:opacity-10" />
                 </label>
 
                 <div class="flex justify-between">
-                    <button class="btn btn-primary">Approve</button>
+                    <button (click)="onApproveSuggestion()" class="btn btn-primary">Approve</button>
                     <button class="btn btn-ghost">Cancel</button>
-
                 </div>
             </form>
         </div>

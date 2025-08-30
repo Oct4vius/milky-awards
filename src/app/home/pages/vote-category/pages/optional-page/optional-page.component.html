@@ -17,7 +17,7 @@
         } @else {
         <ul class="list rounded-box shadow-md">
 
-            @for (item of optionalCategories(); track $index) {
+            @for (item of optionalItems(); track $index) {
 
             <li class="list-row">
                 <div class="text-4xl font-thin opacity-30 tabular-nums">{{item.votes <= 9 ? '0' +(item.votes) :
@@ -46,7 +46,7 @@
                         </button>
                         }
                         @if(isUserAdmin){
-                        <button class="btn btn-square bg-red-500" (click)="deleteVotation(item.uuid)">
+                        <button class="btn btn-circle btn-ghost" (click)="deleteVotation(item.uuid)">
                             <fa-icon [icon]="faTrashCan" />
                         </button>
                         }
