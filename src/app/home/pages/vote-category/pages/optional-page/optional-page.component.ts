@@ -7,7 +7,7 @@ import {
   signal,
 } from '@angular/core';
 import { OptionalService } from '../../services/optional.service';
-import { GetAllOptionalCategoriesResponse } from '../../interfaces/vote-category.interfaces';
+import { OptionalCategories } from '../../interfaces/vote-category.interfaces';
 import { LoadingComponent } from '../../../../../shared/components/Loading/Loading.component';
 import { AuthService } from '../../../../../auth/services/auth.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -27,13 +27,9 @@ export class OptionalPageComponent implements OnInit {
 
   public isButtonDisabled = signal<string[]>([]);
 
-  public optionalItems = signal<GetAllOptionalCategoriesResponse[]>([]);
+  public optionalItems = signal<OptionalCategories[]>([]);
 
   private authService = inject(AuthService);
-
-  public get isUserAdmin() {
-    return this.authService.isUserAdmin;
-  }
 
   private getAllOptionalCategories = () => {
     this.isLoading.set(true);
@@ -50,6 +46,10 @@ export class OptionalPageComponent implements OnInit {
     });
     this.isLoading.set(false);
   };
+
+  public get isUserAdmin() {
+    return this.authService.isUserAdmin;
+  }
 
   public deleteVotation = (uuid: string) => {
     this.optionalService.delete(uuid).subscribe({

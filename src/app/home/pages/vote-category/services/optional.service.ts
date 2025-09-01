@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { enviroments } from '../../../../../environment/environments';
 import { HttpClient } from '@angular/common/http';
-import { GetAllOptionalCategoriesResponse } from '../interfaces/vote-category.interfaces';
+import { OptionalCategories } from '../interfaces/vote-category.interfaces';
 import { map, catchError, throwError } from 'rxjs';
 
 @Injectable({
@@ -16,7 +16,7 @@ export class OptionalService {
     const token = localStorage.getItem('token') || '';
 
     return this.http
-      .get<GetAllOptionalCategoriesResponse[]>(
+      .get<OptionalCategories[]>(
         `${this.baseURL}/optional-categories`,
         {
           headers: {
@@ -47,7 +47,7 @@ export class OptionalService {
   public increaseVoteOptionalCatregory(uuid: string) {
     const token = localStorage.getItem('token') || '';
     return this.http
-      .patch<GetAllOptionalCategoriesResponse>(
+      .patch<OptionalCategories>(
         `${this.baseURL}/optional-categories/increase/${uuid}`,
         {},
         {
@@ -65,7 +65,7 @@ export class OptionalService {
   public DecreaseVoteOptionalCatregory(uuid: string) {
     const token = localStorage.getItem('token') || '';
     return this.http
-      .patch<GetAllOptionalCategoriesResponse>(
+      .patch<OptionalCategories>(
         `${this.baseURL}/optional-categories/decrease/${uuid}`,
         {},
         {

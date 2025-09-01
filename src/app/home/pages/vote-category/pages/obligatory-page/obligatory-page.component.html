@@ -1,11 +1,39 @@
-<div>
+<div class="h-full">
 
-    <h1 class="text-3xl font-bold text-center mb-5">Categoría Obligatoria</h1>
 
-    <div class="flex flex-col gap-4">
-        <p class="">
-            Aquí estan las categorias que van si o si. La pongo aqui nama pa que vayan viendo.
+    <div class="text-center clear-start h-1/12">
+        <h1 class="text-3xl font-bold  mb-5">Categoría Opcionales</h1>
+        <p>
+            Aquí estan las categorias que pueden o no pueden ir. Las 5 categorias con mas votos pasaran a ser caegorias
+            obligatorias.
         </p>
+    </div>
+
+
+    <div class="h-11/12">
+
+        @if(isLoading()){
+        <shared-loading />
+        } @else {
+        <ul class="list rounded-box shadow-md">
+
+            @for (item of obligatoryItems(); track $index) {
+
+            <li class="list-row">
+                <div class="text-4xl font-thin opacity-30 tabular-nums">{{ $index+1 <= 9 ? '0' +( $index+1) :
+                        $index+1}}</div>
+                        <div class="list-col-grow flex items-center ">
+                            <span class="card-title">{{ item.title }}</span>
+                        </div>
+            </li>
+
+            }
+
+        </ul>
+        }
+
+
+
     </div>
 
 

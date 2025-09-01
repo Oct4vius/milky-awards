@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { enviroments } from '../../../../../environment/environments';
-import { CreateSuggestionPayload, CreateSuggestionResponse } from '../interfaces/vote-category.interfaces';
+import { CreateSuggestionPayload, SuggestionCategories } from '../interfaces/vote-category.interfaces';
 import { catchError, map, throwError } from 'rxjs';
 
 @Injectable({providedIn: 'root'})
@@ -11,7 +11,7 @@ export class SuggestionService {
 
     public create (payload: CreateSuggestionPayload) {
         const token = localStorage.getItem('token') || '';
-        return this.http.post<CreateSuggestionResponse>(
+        return this.http.post<SuggestionCategories>(
             `${this.baseURL}/suggestion-categories`,
             payload,
             {
@@ -27,7 +27,7 @@ export class SuggestionService {
 
     public getAll() {
         const token = localStorage.getItem('token') || '';
-        return this.http.get<CreateSuggestionResponse[]>(
+        return this.http.get<SuggestionCategories[]>(
             `${this.baseURL}/suggestion-categories`,
             {
                 headers: {

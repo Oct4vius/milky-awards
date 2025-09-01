@@ -7,7 +7,7 @@ import {
   signal,
 } from '@angular/core';
 import { LoadingComponent } from '../../../../../shared/components/Loading/Loading.component';
-import { CreateSuggestionResponse } from '../../interfaces/vote-category.interfaces';
+import { SuggestionCategories } from '../../interfaces/vote-category.interfaces';
 import { SuggestionService } from '../../services/suggestion.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faCheck, faTrashCan } from '@fortawesome/free-solid-svg-icons';
@@ -23,15 +23,15 @@ export class SuggestionPageComponent implements OnInit {
   
   private suggestionService = inject(SuggestionService);
 
-  public selectedItem = signal<CreateSuggestionResponse>({} as CreateSuggestionResponse);
+  public selectedItem = signal<SuggestionCategories>({} as SuggestionCategories);
   public isLoading = signal<boolean>(false);
-  public suggestionItems = signal<CreateSuggestionResponse[]>([]);
+  public suggestionItems = signal<SuggestionCategories[]>([]);
 
   
   public faTrashCan = faTrashCan;
   public faSquareCheck = faCheck;
 
-  public whenOpeningModal = (item: CreateSuggestionResponse) => {
+  public whenOpeningModal = (item: SuggestionCategories) => {
     this.selectedItem.set({...item});
   }
 

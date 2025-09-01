@@ -27,6 +27,7 @@ export class CategoryButtonComponent {
 
   public isOpen = signal<boolean>(false);
   public isMuted = signal<boolean>(true);
+  
   public faVolumeMute = faVolumeMute;
   public faVolumeHigh = faVolumeHigh;
   public faLock = faLock;
