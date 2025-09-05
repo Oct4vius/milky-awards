@@ -1,8 +1,8 @@
 <div class="h-full">
 
 
-    <div class="text-center clear-start h-1/12">
-        <h1 class="text-3xl font-bold  mb-5">Categoría Opcionales</h1>
+    <div class="text-center">
+        <h1 class="text-3xl font-bold mb-5">Categoría Opcionales</h1>
         <p>
             Aquí estan las categorias que pueden o no pueden ir. Las 5 categorias con mas votos pasaran a ser caegorias
             obligatorias.
@@ -10,7 +10,7 @@
     </div>
 
 
-    <div class="h-11/12">
+    <div>
 
         @if(isLoading()){
         <shared-loading />
@@ -19,38 +19,48 @@
 
             @for (item of optionalItems(); track $index) {
 
-            <li class="list-row">
-                <div class="text-4xl font-thin opacity-30 tabular-nums">{{item.votes <= 9 ? '0' +(item.votes) :
-                        item.votes+1}}</div>
-                        <div class="list-col-grow flex items-center ">
-                            <span class="card-title">{{ item.title }}</span>
-                        </div>
-                        @if (item.userVoted) {
-                        <button (click)="decrease(item.uuid)" class="btn text-normal min-w-48 bg-red-950 btn-ghost"
-                            [disabled]="isButtonDisabled().includes(item.uuid)">
-                            @if (isButtonDisabled().includes(item.uuid)){
-                            <shared-loading />
-                            } @else {
-                            Mentira ete no va no
-                            }
-                        </button>
+            <li class="list-row flex max-sm:flex-col justify-between">
+                <div class="flex justify-between gap-2 max-sm:flex-row-reverse">
+
+                    <div class="text-4xl font-thin opacity-30 tabular-nums">
+                        {{item.votes <= 9 ? '0' +(item.votes) : item.votes+1}} 
+                    </div>
+
+                    <div class="list-col-grow flex items-center ">
+                        <span class="card-title">{{ item.title }}</span>
+                    </div>
+
+                </div>
+
+                <div class="flex">
+                    @if (item.userVoted) {
+                    <button (click)="decrease(item.uuid)"
+                        class="btn text-normal min-w-48 {{isUserAdmin ? 'max-sm:w-5/6' : 'max-sm:w-6/6'}} bg-red-950 btn-ghost"
+                        [disabled]="isButtonDisabled().includes(item.uuid)">
+                        @if (isButtonDisabled().includes(item.uuid)){
+                        <shared-loading />
                         } @else {
-                        <button (click)="increase(item.uuid)" class="btn text-normal min-w-48 bg-green-950 btn-ghost"
-                            [disabled]="isButtonDisabled().includes(item.uuid)">
-
-                            @if (isButtonDisabled().includes(item.uuid)){
-                            <shared-loading />
-                            } @else {
-                            Ete tiene que ir
-                            }
-                        </button>
+                        Mentira ete no va no
                         }
-                        @if(isUserAdmin){
-                        <button class="btn btn-circle btn-ghost" (click)="deleteVotation(item.uuid)">
-                            <fa-icon [icon]="faTrashCan" />
-                        </button>
-                        }
+                    </button>
+                    } @else {
+                    <button (click)="increase(item.uuid)"
+                        class="btn text-normal min-w-48 {{isUserAdmin ? 'max-sm:w-5/6' : 'max-sm:w-6/6'}} bg-green-950 btn-ghost"
+                        [disabled]="isButtonDisabled().includes(item.uuid)">
 
+                        @if (isButtonDisabled().includes(item.uuid)){
+                        <shared-loading />
+                        } @else {
+                        Ete tiene que ir
+                        }
+                    </button>
+                    }
+                    @if(isUserAdmin){
+                    <button class="btn btn-circle btn-ghost max-sm:w-1/6" (click)="deleteVotation(item.uuid)">
+                        <fa-icon [icon]="faTrashCan" />
+                    </button>
+                    }
+                </div>
             </li>
 
             }

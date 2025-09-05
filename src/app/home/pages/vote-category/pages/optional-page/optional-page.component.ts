@@ -36,15 +36,15 @@ export class OptionalPageComponent implements OnInit {
     this.optionalService.getAll().subscribe({
       next: (categories) => {
         this.optionalItems.set(categories);
+        this.isLoading.set(false);
       },
       error: (err) => {
         alert(err.message);
         console.error(err);
-
         this.optionalItems.set([]);
+        this.isLoading.set(false);
       },
     });
-    this.isLoading.set(false);
   };
 
   public get isUserAdmin() {
@@ -54,13 +54,13 @@ export class OptionalPageComponent implements OnInit {
   public deleteVotation = (uuid: string) => {
     this.optionalService.delete(uuid).subscribe({
       next: () => {
-        this.getAllOptionalCategories()
+        this.getAllOptionalCategories();
       },
       error: (error) => {
-        console.error(error)
-      }
-    })
-  }
+        console.error(error);
+      },
+    });
+  };
 
   public increase = (uuid: string) => {
     this.isButtonDisabled.update((uuids) => [...uuids, uuid]);
@@ -108,7 +108,6 @@ export class OptionalPageComponent implements OnInit {
         );
       },
     });
-
   };
 
   ngOnInit(): void {

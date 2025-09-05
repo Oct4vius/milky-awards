@@ -1,7 +1,6 @@
-<div class="flex p-2 h-full gap-5">
+<div class="flex flex-col md:flex-row p-2 h-full gap-3 md:gap-5">
 
-
-    <div class="bg-base-200 rounded-2xl p-[10px_10px] w-1/5 flex flex-col gap-4 ">
+    <div class="bg-base-200 rounded-2xl p-[10px_10px] w-1/5  flex-col gap-4 hidden md:flex ">
         <button (click)="goBack()" class="btn btn-ghost btn-circle">
             <fa-icon [icon]="faArrowLeft" />
         </button>
@@ -26,7 +25,53 @@
         </div>
     </div>
 
-    <div class="bg-base-200 rounded-2xl w-4/5 max-sm:w-5/5 p-3 overflow-auto">
+    <!-- mobile menu -->
+
+    <div class="flex md:hidden">
+
+        <!-- <button (click)="goBack()" class="btn btn-circle ">
+            <fa-icon [icon]="faArrowLeft" />
+        </button> -->
+
+
+        <div class="dropdown dropdown-start w-full">
+
+            <div class="flex justify-between w-full items-center">
+                <div tabindex="0" role="button" class="btn m-1">
+                    <fa-icon [icon]="faBars" />
+                </div>
+                
+                <button (click)="goBack()" class="btn  btn-circle">
+                    <fa-icon [icon]="faArrowLeft" />
+                </button>
+            </div>
+                
+            <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
+                @for (item of MenuItems; track $index) {
+
+                @if (item.name === 'Categorías sugerenciadas' && !isAdmin()) {
+                <li>
+                    <button (click)="onClickMenuItem(item.route)"
+                        class="btn shadow-none outline-none w-full p-[24px_8px] {{selectedMenu() === item.route ? 'bg-black! text-white' : '' }}">
+                        {{item.name}}
+                    </button>
+                </li>
+
+                } @else {
+                <li>
+                    <button (click)="onClickMenuItem(item.route)"
+                        class="btn shadow-none outline-none w-full p-[24px_8px] {{selectedMenu() === item.route ? 'bg-black! text-white' : '' }}">
+                        {{item.name}}
+                    </button>
+                </li>
+                }
+                }
+            </ul>
+        </div>
+
+    </div>
+
+    <div class="bg-base-200 rounded-2xl w-5/5 md:w-4/5 p-3 overflow-auto h-full">
         <router-outlet />
     </div>
 

@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faBars } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '../../../auth/services/auth.service';
 
 @Component({
@@ -23,6 +23,7 @@ export class VoteCategoryComponent implements OnInit {
   public selectedMenu = signal<string>('');
 
   public faArrowLeft = faArrowLeft;
+  public faBars = faBars;
 
   public MenuItems = [
     { name: 'Categorías obligatorias', route: 'cat-obligatory' },

@@ -1,7 +1,7 @@
 <div class="h-full">
 
 
-    <div class="text-center clear-start h-1/12">
+    <div class="text-center clear-start">
         <h1 class="text-3xl font-bold  mb-5">Sugerencia una categoria</h1>
         <p>
             Aquí puedes sugerir una nueva categoria para que sea añadida a las votaciones solo si un admin la aprueba.
@@ -10,9 +10,9 @@
     </div>
 
 
-    <div class="h-11/12">
+    <div>
 
-        <form [formGroup]="suggestForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4 p-6 w-4/12">
+        <form [formGroup]="suggestForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4 p-6 lg:w-4/12 md:w-6/12 ">
 
             <div class="flex flex-col gap-2 ">
                 <fieldset class="fieldset">
@@ -41,31 +41,17 @@
                 }
             </div>
 
+            <button type="submit" class="btn btn-primary" [disabled]="suggestForm.invalid || isLoading()">
+                
+                @if (isLoading()){
+                    <shared-loading/>
+                } @else {
+                    Enviar sugerencia
+                }
 
-
-            <button type="submit" class="btn btn-primary" [disabled]="suggestForm.invalid">Enviar sugerencia</button>
+            </button>
         </form>
 
-        @if(isSuccess()){
-
-        <div role="alert" class="alert alert-success absolute bottom-4 right-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none"
-                viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <span>Sugerencia enviada!</span>
-        </div>
-        } @else if(isSuccess() === false) {
-        <div role="alert" class="alert alert-error absolute bottom-4 right-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none"
-                viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <span>Ocurrio algo mal. Habla con una de la gente que hace el diparate ete.</span>
-        </div>
-        }
     </div>
 
 

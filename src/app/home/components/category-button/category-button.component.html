@@ -1,12 +1,11 @@
 <button
   #categoryButton
   [disabled]="disabled()"
-  [class.open]="isOpen()"
   (mouseenter)="isOpen.set(true)"
   (mouseleave)="onMouseLeave()"
   (click)="onClick()"
   class="bg-[#F7F7F7]  text-[#212121] font-bold rounded-lg 
-  cursor-pointer w-full transition-all duration-300 ease-in-out h-[100px] hover:h-[500px] button-category 
+  cursor-pointer w-full transition-all duration-300 ease-in-out lg:h-[100px] h-[200px] hover:h-[500px] button-category 
   overflow-hidden relative shadow-2xl flex {{ !disabled() ? 'active:translate-y-3.5' : ''}}"
 >
 
@@ -31,7 +30,7 @@
     <source [src]="video()" type="video/mp4" />
     Your browser does not support the video tag.
   </video>
-  <button (click)="onClickVolume($event)" class="absolute text-2xl bottom-4 right-4 z-10 {{ isOpen() ? 'opacity-100' : 'opacity-0' }}">
+  <button (click)="onClickVolume($event)" class="absolute text-2xl bottom-4 right-4 z-10 {{ isOpen() ? 'flex' : 'lg:hidden flex' }}  ">
     <fa-icon
       class="text-[white]"
       [icon]="isMuted() ? faVolumeMute : faVolumeHigh"

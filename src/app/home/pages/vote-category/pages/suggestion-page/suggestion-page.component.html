@@ -1,7 +1,7 @@
 <div class="h-full">
 
 
-    <div class="text-center h-1/12">
+    <div class="text-center">
         <h1 class="text-3xl font-bold  mb-5">Categoría Sugerenciadas</h1>
         <p>
             Esta parte solo la puden ver los que son admins. Aqui estan las categorias que los usuarios han sugerido.
@@ -10,7 +10,7 @@
     </div>
 
 
-    <div class="h-11/12">
+    <div>
 
         @if(isLoading()){
         <shared-loading />
@@ -31,10 +31,10 @@
                         </p>
                         }
 
-                        <button class="btn btn-square bg-green-500" onclick="approve_modal.showModal()" (click)="whenOpeningModal(item)" >
+                        <button class="btn btn-square bg-green-950" onclick="approve_modal.showModal()" (click)="whenOpeningModal(item)" >
                             <fa-icon [icon]="faSquareCheck" />
                         </button>
-                        <button class="btn btn-square bg-red-500" (click)="onDeleteSuggestion(item.uuid)">
+                        <button class="btn btn-circle btn-ghost" (click)="onDeleteSuggestion(item.uuid)">
                             <fa-icon [icon]="faTrashCan" />
                         </button>
             </li>
