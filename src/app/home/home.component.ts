@@ -14,7 +14,6 @@ export class HomeLayoutComponent {
   
   private authService = inject(AuthService);
 
-  
   public userFirstName = computed(() => this.authService.currentUser()?.name || "Fulano")
   
   public faArrowRightFromBracket = faArrowRightFromBracket;
