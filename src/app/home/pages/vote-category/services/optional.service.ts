@@ -1,8 +1,9 @@
 import { inject, Injectable } from '@angular/core';
-import { enviroments } from '../../../../../environment/environments';
+import { enviroments } from '../../../../../environments/environments';
 import { HttpClient } from '@angular/common/http';
 import { OptionalCategories } from '../interfaces/vote-category.interfaces';
 import { map, catchError, throwError } from 'rxjs';
+import { apiConfig } from '../../../../../environments/api-config';
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +21,7 @@ export class OptionalService {
         `${this.baseURL}/optional-categories`,
         {
           headers: {
+            ...apiConfig.headers,
             authorization: `Bearer ${token}`,
           },
         }
@@ -35,6 +37,7 @@ export class OptionalService {
     return this.http
       .delete(`${this.baseURL}/optional-categories/${uuid}`, {
         headers: {
+          ...apiConfig.headers,
           authorization: `Bearer ${token}`,
         },
       })
@@ -52,6 +55,7 @@ export class OptionalService {
         {},
         {
           headers: {
+            ...apiConfig.headers,
             authorization: `Bearer ${token}`,
           },
         }
@@ -70,6 +74,7 @@ export class OptionalService {
         {},
         {
           headers: {
+            ...apiConfig.headers,
             authorization: `Bearer ${token}`,
           },
         }

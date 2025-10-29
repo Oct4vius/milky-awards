@@ -20,23 +20,27 @@
             @for (item of suggestionItems(); track $index) {
 
             <li class="list-row">
-                <div class="text-4xl font-thin opacity-30 tabular-nums">{{ $index+1 <= 9 ? '0' +( $index+1) :
-                        $index+1}}</div>
-                        <div class="list-col-grow flex items-center ">
-                            <span class="card-title">{{ item.title }}</span>
-                        </div>
-                        @if (item.description) {
-                        <p class="list-col-wrap text-xs">
-                            {{ item.description + " - " + item.author }}
-                        </p>
-                        }
+                <div class="text-4xl font-thin opacity-30 tabular-nums">
+                    {{ $index+1 <= 9 ? '0' +( $index+1) : $index+1}}
+                </div>
+                
+                <div class="list-col-grow flex items-center ">
+                    <span class="card-title">{{ item.title }}</span>
+                </div>
 
-                        <button class="btn btn-square bg-green-950" onclick="approve_modal.showModal()" (click)="whenOpeningModal(item)" >
-                            <fa-icon [icon]="faSquareCheck" />
-                        </button>
-                        <button class="btn btn-circle btn-ghost" (click)="onDeleteSuggestion(item.uuid)">
-                            <fa-icon [icon]="faTrashCan" />
-                        </button>
+                @if (item.description) {
+                <p class="list-col-wrap text-xs">
+                    {{ item.description + " - " + item.author }}
+                </p>
+                }
+
+                <button class="btn btn-square bg-green-950" onclick="approve_modal.showModal()"
+                    (click)="whenOpeningModal(item)">
+                    <fa-icon [icon]="faSquareCheck" />
+                </button>
+                <button class="btn btn-circle btn-ghost" (click)="onDeleteSuggestion(item.uuid)">
+                    <fa-icon [icon]="faTrashCan" />
+                </button>
             </li>
 
             }
@@ -56,7 +60,8 @@
             <form method="dialog" class="w-full flex flex-col gap-4">
                 <label class="floating-label">
                     <span>Titulo</span>
-                    <input [(ngModel)]="selectedItem().title" name="title"  placeholder="Aquí el titulo" class="input input-md w-full placeholder:opacity-10" />
+                    <input [(ngModel)]="selectedItem().title" name="title" placeholder="Aquí el titulo"
+                        class="input input-md w-full placeholder:opacity-10" />
                 </label>
 
                 <div class="flex justify-between">

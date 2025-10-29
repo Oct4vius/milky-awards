@@ -44,7 +44,7 @@ export class MakeSuggestionPageComponent {
       .subscribe({
         next: () => {
           this.alert.useAlert({
-            type: AlertType.SUCCESS,
+            type: 'success',
             message: 'Sugerencia enviada!',
             timeout: 3000,
           });
@@ -53,7 +53,7 @@ export class MakeSuggestionPageComponent {
         },
         error: (err) => {
           this.alert.useAlert({
-            type: AlertType.ERROR,
+            type: 'error',
             message:
               'Ocurrio algo mal. Habla con una de la gente que hace el diparate ete.',
             timeout: 3000,

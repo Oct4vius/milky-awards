@@ -1,8 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { enviroments } from '../../../../../environment/environments';
 import { ObligatoryCategories } from '../interfaces/vote-category.interfaces';
 import { map, catchError, throwError } from 'rxjs';
+import { enviroments } from '../../../../../environments/environments';
+import { apiConfig } from '../../../../../environments/api-config';
 
 @Injectable({ providedIn: 'root' })
 export class ObligatoryService {
@@ -17,6 +18,7 @@ export class ObligatoryService {
         `${this.baseURL}/obligatory-categories`,
         {
           headers: {
+            ...apiConfig.headers,
             authorization: `Bearer ${token}`,
           },
         }

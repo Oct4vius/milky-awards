@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { enviroments } from '../../../../../environment/environments';
+import { enviroments } from '../../../../../environments/environments';
 import { CreateSuggestionPayload, SuggestionCategories } from '../interfaces/vote-category.interfaces';
 import { catchError, map, throwError } from 'rxjs';
+import { apiConfig } from '../../../../../environments/api-config';
 
 @Injectable({providedIn: 'root'})
 export class SuggestionService {
@@ -16,6 +17,7 @@ export class SuggestionService {
             payload,
             {
                 headers: {
+                    ...apiConfig.headers,
                     authorization: `Bearer ${token}`,
                 },
             }
@@ -31,6 +33,7 @@ export class SuggestionService {
             `${this.baseURL}/suggestion-categories`,
             {
                 headers: {
+                    ...apiConfig.headers,
                     authorization: `Bearer ${token}`,
                 },
             }
@@ -46,6 +49,7 @@ export class SuggestionService {
             `${this.baseURL}/suggestion-categories/${uuid}`,
             {
                 headers: {
+                    ...apiConfig.headers,
                     authorization: `Bearer ${token}`,
                 },
             }
@@ -64,6 +68,7 @@ export class SuggestionService {
             },
             {
                 headers: {
+                    ...apiConfig.headers,
                     authorization: `Bearer ${token}`,
                 },
             }

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { enviroments } from '../../../environment/environments';
+import { enviroments } from '../../../environments/environments';
 import { User } from '../../../interfaces/user.interfaces';
 import { catchError, map, throwError } from 'rxjs';
 import {
@@ -10,6 +10,7 @@ import {
   RegisterResponse,
 } from '../interfaces/auth.intefaces';
 import { Router } from '@angular/router';
+import { apiConfig } from '../../../environments/api-config';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -17,6 +18,7 @@ export class AuthService {
   private router = inject(Router);
   
   private baseURL = enviroments.baseURL;
+
   private _currentUser = signal<User | null>(null);
   public currentUser = computed(() => {return this._currentUser()});
 
@@ -36,7 +38,7 @@ export class AuthService {
       .post<LoginResponse>(`${this.baseURL}/auth/login`, {
         email,
         password,
-      })
+      }, apiConfig)
       .pipe(
         map(({ user, token }) => {
           return this.setAuthentication(user, token);
@@ -55,7 +57,7 @@ export class AuthService {
   public register(payload: RegisterPayloadType) {
     return this.http.post<RegisterResponse>(
       `${this.baseURL}/auth/register`,
-      payload
+      payload, apiConfig
     ).pipe(
       map(({ newUser, token }) => {
         return this.setAuthentication(newUser, token);
@@ -70,6 +72,7 @@ export class AuthService {
     return this.http
       .get<User>(`${this.baseURL}/auth/check-token`, {
         headers: {
+          ...apiConfig.headers,
           Authorization: `Bearer ${token}`,
         },
       })
@@ -88,7 +91,7 @@ export class AuthService {
     return this.http
       .post(`${this.baseURL}/auth/check-if-whitelisted`, {
         email,
-      })
+      }, apiConfig)
       .pipe(catchError((err) => throwError(() => err.error.message)));
   }
 }
